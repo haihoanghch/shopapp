@@ -1,0 +1,29 @@
+"use client"
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+
+export default function Home() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+  async function fetchProducts() {
+    const { data } = await supabase.from('products').select('*')
+    setProducts(data)
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Shop Online</h1>
+      {products.map(product => (
+        <div key={product.id} style={{ border: "1px solid #ccc", margin: 10, padding: 10 }}>
+          <h2>{product.name}</h2>
+          <p>{product.description}</p>
+          <p>{product.price} VND</p>
+        </div>
+      ))}
+    </div>
+  )
+}
